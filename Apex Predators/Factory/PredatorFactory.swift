@@ -11,6 +11,7 @@ internal import Combine
 
 class PredatorFactory {
     
+   var allapexPredators: [ApexPredator] = []
    var apexPredators: [ApexPredator] = []
     
     init() {
@@ -23,7 +24,8 @@ class PredatorFactory {
                 let data = try Data(contentsOf: url)
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
-                apexPredators = try decoder.decode([ApexPredator].self, from: data)
+                allapexPredators = try decoder.decode([ApexPredator].self, from: data)
+                apexPredators = allapexPredators
                 print("Successfully parsed JSON data.\(apexPredators)")
             } catch {
                 print("Error:\(error)")
@@ -46,6 +48,14 @@ class PredatorFactory {
             apexPredators.sort{ $0.name < $1.name }
         }else{
             apexPredators.sort{ $0.id < $1.id }
+        }
+    }
+    
+    func filter(by type: PredatorType) {
+        if type == .all {
+             apexPredators = allapexPredators
+        } else {
+            apexPredators = allapexPredators.filter{ $0.type == type }
         }
     }
 }

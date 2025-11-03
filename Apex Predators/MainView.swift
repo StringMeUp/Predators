@@ -11,9 +11,11 @@ struct MainView: View {
     var predatorFactory = PredatorFactory()
     @State var searchText: String = ""
     @State var alphabeticalOrder: Bool = false
+    @State var currentSelection: PredatorType = .all
     
     //Computed property
     var filteredPredators: [ApexPredator] {
+        predatorFactory.filter(by: currentSelection)
         predatorFactory.sort(by: alphabeticalOrder)
         return predatorFactory.search(for: searchText)
     }
@@ -67,6 +69,18 @@ struct MainView: View {
                     } label: {
                         Image(systemName: alphabeticalOrder ? "film" : "textformat")
                             .symbolEffect(.bounce, value: alphabeticalOrder)
+                    }
+                }
+                
+                ToolbarItem(placement: .topBarTrailing){
+                    Menu {
+                        Picker("Sort by", selection: $currentSelection.animation()) {
+                           ForEach(PredatorType.allCases){ type in
+                               Label(type.rawValue.capitalized, systemImage: type.icon)
+                           }
+                        }
+                    } label: {
+                        Image(systemName: "slider.horizontal.3")
                     }
                 }
             }

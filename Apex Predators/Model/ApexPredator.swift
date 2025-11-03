@@ -30,6 +30,8 @@ struct ApexPredator: Decodable, Identifiable {
             return Color.teal
         case .sea:
             return Color.blue
+        case .all:
+            return Color.black
         }
     }
 }
