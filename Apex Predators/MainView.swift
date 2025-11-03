@@ -65,11 +65,8 @@ struct MainView: View {
                           alphabeticalOrder.toggle()
                         }
                     } label: {
-                        if alphabeticalOrder {
-                            Image(systemName: "film")
-                        } else {
-                            Image(systemName: "textformat")
-                        }
+                        Image(systemName: alphabeticalOrder ? "film" : "textformat")
+                            .symbolEffect(.bounce, value: alphabeticalOrder)
                     }
                 }
             }
