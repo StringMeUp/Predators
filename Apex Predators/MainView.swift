@@ -8,10 +8,17 @@
 import SwiftUI
 
 struct MainView: View {
-    let predatorFactory = PredatorFactory()
+    var predatorFactory = PredatorFactory()
+    @State var searchText: String = ""
+    
+    //Computed property
+    var filteredPredators: [ApexPredator] {
+        predatorFactory.search(for: searchText)
+    }
+    
     var body: some View {
         NavigationStack {
-            List(predatorFactory.apexPredators){ predator in
+            List(filteredPredators) { predator in
                 NavigationLink {
                     Image(predator.imageUrl)
                         .resizable()
@@ -24,12 +31,12 @@ struct MainView: View {
                             .frame(width: 100, height: 100)
                             .shadow(color: .white, radius: 2)
                             .padding()
-        
+                        
                         VStack(alignment: .leading) {
-        
+                            
                             Text(predator.name)
                                 .fontWeight(.bold)
-        
+                            
                             Text(predator.type.rawValue)
                                 .font(.subheadline)
                                 .padding(.horizontal, 13)
@@ -37,14 +44,20 @@ struct MainView: View {
                                 .background(predator.backgroundColor)
                                 .clipShape(.capsule)
                                 .padding(.vertical, 4)
-        
+                            
                         }
                     }
                 }
-        
-            }.navigationTitle("Apex Predators")
-        
-        } .preferredColorScheme(ColorScheme.dark)
+            }
+            .navigationTitle("Apex Predators")
+            .searchable(
+                text: $searchText,
+                placement: .navigationBarDrawer(displayMode: .always)
+            )
+            .autocorrectionDisabled()
+            .animation(.default, value: searchText)
+            .preferredColorScheme(.dark)
+        }
     }
 }
 

@@ -6,13 +6,14 @@
 //
 
 import Foundation
+import SwiftUI
+internal import Combine
 
 class PredatorFactory {
     
-    var apexPredators: [ApexPredator] = []
+   var apexPredators: [ApexPredator] = []
     
     init() {
-        print("Init")
         decodePredatorsFromFile()
     }
     
@@ -26,6 +27,16 @@ class PredatorFactory {
                 print("Successfully parsed JSON data.\(apexPredators)")
             } catch {
                 print("Error:\(error)")
+            }
+        }
+    }
+    
+    func search(for seachText: String) -> [ApexPredator] {
+        if seachText.isEmpty {
+            return apexPredators
+        } else {
+            return apexPredators.filter{ predator in
+                predator.name.localizedCaseInsensitiveContains(seachText)
             }
         }
     }
