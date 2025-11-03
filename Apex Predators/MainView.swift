@@ -10,10 +10,12 @@ import SwiftUI
 struct MainView: View {
     var predatorFactory = PredatorFactory()
     @State var searchText: String = ""
+    @State var alphabeticalOrder: Bool = false
     
     //Computed property
     var filteredPredators: [ApexPredator] {
-        predatorFactory.search(for: searchText)
+        predatorFactory.sort(by: alphabeticalOrder)
+        return predatorFactory.search(for: searchText)
     }
     
     var body: some View {
@@ -56,6 +58,21 @@ struct MainView: View {
             )
             .autocorrectionDisabled()
             .animation(.default, value: searchText)
+            .toolbar {
+                ToolbarItem(placement: .topBarLeading) {
+                    Button {
+                        withAnimation {
+                          alphabeticalOrder.toggle()
+                        }
+                    } label: {
+                        if alphabeticalOrder {
+                            Image(systemName: "film")
+                        } else {
+                            Image(systemName: "textformat")
+                        }
+                    }
+                }
+            }
             .preferredColorScheme(.dark)
         }
     }

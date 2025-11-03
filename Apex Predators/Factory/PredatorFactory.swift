@@ -40,4 +40,12 @@ class PredatorFactory {
             }
         }
     }
+    
+    func sort(by alphabetical: Bool){
+        if alphabetical {
+            apexPredators.sort{ $0.name < $1.name }
+        }else{
+            apexPredators.sort{ $0.id < $1.id }
+        }
+    }
 }
