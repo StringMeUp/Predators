@@ -1,0 +1,47 @@
+# Xcode
+#
+build/
+DerivedData/
+*.xcuserstate
+*.xcworkspace
+xcuserdata/
+xcshareddata/
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+
+# Swift Package Manager
+.build/
+Packages/
+Package.resolved
+
+# CocoaPods
+Pods/
+Podfile.lock
+
+# Carthage
+Carthage/
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+# iOS
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary
+*.swp
+*.swo
+*.lock
+*.tmp
+*.log
