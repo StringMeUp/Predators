@@ -15,7 +15,7 @@ enum PredatorType: String, Decodable, CaseIterable, Identifiable {
     
     var icon: String {
         switch self {
-        case .all: "square.fill"
+        case .all: "checkmark.circle.fill"
         case .land: "leaf.fill"
         case .air: "airplane.up.forward"
         case .sea: "water.waves"

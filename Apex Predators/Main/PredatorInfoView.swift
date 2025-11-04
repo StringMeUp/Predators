@@ -1,5 +1,5 @@
 //
-//  ApexMainItem.swift
+//  PredatorInfoView.swift
 //  Apex Predators
 //
 //  Created by Samir Ramic on 30.10.25.
@@ -7,12 +7,14 @@
 
 import SwiftUI
 
-struct MainItemInfoView: View {
+struct PredatorInfoView: View {
    
     var predator: ApexPredator
     
     var body: some View {
+        // predator item
         HStack {
+            // image
             Image(predator.imageUrl)
                 .resizable()
                 .scaledToFit()
@@ -21,10 +23,10 @@ struct MainItemInfoView: View {
                 .padding()
             
             VStack(alignment: .leading) {
-                
+                // name
                 Text(predator.name)
                     .fontWeight(.bold)
-                
+                // type
                 Text(predator.type.rawValue)
                     .font(.subheadline)
                     .padding(.horizontal, 13)

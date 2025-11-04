@@ -11,15 +11,18 @@ internal import Combine
 
 class PredatorFactory {
     
-   var allapexPredators: [ApexPredator] = []
-   var apexPredators: [ApexPredator] = []
+    var allapexPredators: [ApexPredator] = []
+    var apexPredators: [ApexPredator] = []
     
     init() {
         decodePredatorsFromFile()
     }
     
     func decodePredatorsFromFile() {
-        if let url = Bundle.main.url(forResource: "apexpredators", withExtension: "json") {
+        if let url = Bundle.main.url(
+            forResource: "apexpredators",
+            withExtension: "json"
+        ) {
             do {
                 let data = try Data(contentsOf: url)
                 let decoder = JSONDecoder()
@@ -37,7 +40,7 @@ class PredatorFactory {
         if seachText.isEmpty {
             return apexPredators
         } else {
-            return apexPredators.filter{ predator in
+            return apexPredators.filter { predator in
                 predator.name.localizedCaseInsensitiveContains(seachText)
             }
         }
@@ -45,17 +48,17 @@ class PredatorFactory {
     
     func sort(by alphabetical: Bool){
         if alphabetical {
-            apexPredators.sort{ $0.name < $1.name }
+            apexPredators.sort { $0.name < $1.name }
         }else{
-            apexPredators.sort{ $0.id < $1.id }
+            apexPredators.sort { $0.id < $1.id }
         }
     }
     
     func filter(by type: PredatorType) {
         if type == .all {
-             apexPredators = allapexPredators
+            apexPredators = allapexPredators
         } else {
-            apexPredators = allapexPredators.filter{ $0.type == type }
+            apexPredators = allapexPredators.filter { $0.type == type }
         }
     }
 }

@@ -24,33 +24,10 @@ struct MainView: View {
         NavigationStack {
             List(filteredPredators) { predator in
                 NavigationLink {
-                    Image(predator.imageUrl)
-                        .resizable()
-                        .scaledToFit()
+                    // detail info
+                    PredatorDetailView(predator: predator)
                 } label: {
-                    HStack {
-                        Image(predator.imageUrl)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 100, height: 100)
-                            .shadow(color: .white, radius: 2)
-                            .padding()
-                        
-                        VStack(alignment: .leading) {
-                            
-                            Text(predator.name)
-                                .fontWeight(.bold)
-                            
-                            Text(predator.type.rawValue)
-                                .font(.subheadline)
-                                .padding(.horizontal, 13)
-                                .padding(.vertical, 5)
-                                .background(predator.backgroundColor)
-                                .clipShape(.capsule)
-                                .padding(.vertical, 4)
-                            
-                        }
-                    }
+                    PredatorInfoView(predator: predator)
                 }
             }
             .navigationTitle("Apex Predators")
@@ -61,6 +38,7 @@ struct MainView: View {
             .autocorrectionDisabled()
             .animation(.default, value: searchText)
             .toolbar {
+                // order alphabetically
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         withAnimation {
@@ -72,6 +50,7 @@ struct MainView: View {
                     }
                 }
                 
+                // popup menu filter
                 ToolbarItem(placement: .topBarTrailing){
                     Menu {
                         Picker("Sort by", selection: $currentSelection.animation()) {
