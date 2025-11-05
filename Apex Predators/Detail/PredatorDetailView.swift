@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct PredatorDetailView: View {
     
     var predator: ApexPredator
+    @State var mapCamera: MapCameraPosition = MapCameraPosition.automatic
 
     var body: some View {
+       
         GeometryReader{ geo in
             ScrollView {
                 ZStack(alignment: Alignment.bottomTrailing) {
@@ -39,9 +42,31 @@ struct PredatorDetailView: View {
                     Text(predator.name)
                         .font(.largeTitle)
                     
-                    
                     // Location
-                    
+                    ZStack(alignment: .trailing){
+                        Map(position: $mapCamera){
+                            Marker(
+                                coordinate: CLLocationCoordinate2D(
+                                    latitude: predator.latitude,
+                                    longitude: predator.longitude
+                                ),
+                                label: {
+                                    Image(predator.imageUrl)
+                                })
+                        }
+                        NavigationLink{
+                            Image(predator.imageUrl)
+                        } label: {
+                            Image(systemName: "chevron.right")
+                                .resizable()
+                                .scaledToFill()
+                                .frame(width: 20, height: 20)
+                                .foregroundColor(Color.white)
+                                .padding()
+                        }
+                        
+                    }.frame(width: .none, height: 150).cornerRadius(20)
+                   
                     // Appears in movies
                     VStack(alignment: .leading){
                         Text("Appears in:").font(.title2)
