@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import MapKit
 
 struct MainView: View {
     var predatorFactory = PredatorFactory()
@@ -25,7 +26,9 @@ struct MainView: View {
             List(filteredPredators) { predator in
                 NavigationLink {
                     // detail info
-                    PredatorDetailView(predator: predator)
+                    PredatorDetailView(
+                        predator: predator,
+                        mapCameraPosition: .camera(MapCamera(centerCoordinate: predator.location, distance: 30000)))
                 } label: {
                     PredatorInfoView(predator: predator)
                 }
@@ -42,21 +45,29 @@ struct MainView: View {
                 ToolbarItem(placement: .topBarLeading) {
                     Button {
                         withAnimation {
-                          alphabeticalOrder.toggle()
+                            alphabeticalOrder.toggle()
                         }
                     } label: {
-                        Image(systemName: alphabeticalOrder ? "film" : "textformat")
-                            .symbolEffect(.bounce, value: alphabeticalOrder)
+                        Image(
+                            systemName: alphabeticalOrder ? "film" : "textformat"
+                        )
+                        .symbolEffect(.bounce, value: alphabeticalOrder)
                     }
                 }
                 
                 // popup menu filter
                 ToolbarItem(placement: .topBarTrailing){
                     Menu {
-                        Picker("Sort by", selection: $currentSelection.animation()) {
-                           ForEach(PredatorType.allCases){ type in
-                               Label(type.rawValue.capitalized, systemImage: type.icon)
-                           }
+                        Picker(
+                            "Sort by",
+                            selection: $currentSelection.animation()
+                        ) {
+                            ForEach(PredatorType.allCases){ type in
+                                Label(
+                                    type.rawValue.capitalized,
+                                    systemImage: type.icon
+                                )
+                            }
                         }
                     } label: {
                         Image(systemName: "slider.horizontal.3")

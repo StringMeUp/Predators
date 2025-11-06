@@ -11,10 +11,9 @@ import MapKit
 struct PredatorDetailView: View {
     
     var predator: ApexPredator
-    @State var mapCamera: MapCameraPosition = MapCameraPosition.automatic
+    @State var mapCameraPosition: MapCameraPosition
 
     var body: some View {
-       
         GeometryReader{ geo in
             ScrollView {
                 ZStack(alignment: Alignment.bottomTrailing) {
@@ -44,18 +43,16 @@ struct PredatorDetailView: View {
                     
                     // Location
                     ZStack(alignment: .trailing){
-                        Map(position: $mapCamera){
-                            Marker(
-                                coordinate: CLLocationCoordinate2D(
-                                    latitude: predator.latitude,
-                                    longitude: predator.longitude
-                                ),
-                                label: {
-                                    Image(predator.imageUrl)
-                                })
+                        Map(position: $mapCameraPosition){
+                            Annotation(predator.name, coordinate: predator.location){
+                                Image(systemName: "mappin.and.ellipse")
+                                    .font(.largeTitle)
+                                    .imageScale(.large)
+                                    .symbolEffect(.pulse)
+                            }.annotationTitles(.hidden)
                         }
                         NavigationLink{
-                            Image(predator.imageUrl)
+                            MapDetailView(predator: predator, mapCameraPosition: $mapCameraPosition)
                         } label: {
                             Image(systemName: "chevron.right")
                                 .resizable()
@@ -103,5 +100,7 @@ struct PredatorDetailView: View {
 
 #Preview {
     let predatorFactory = PredatorFactory().allapexPredators[1]
-    PredatorDetailView(predator: predatorFactory)
+    let position = PredatorFactory().allapexPredators[1].location
+    
+    PredatorDetailView(predator: predatorFactory, mapCameraPosition: .camera(MapCamera(centerCoordinate: position, distance: 3000)))
 }
