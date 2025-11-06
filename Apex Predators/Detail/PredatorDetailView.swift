@@ -44,7 +44,6 @@ struct PredatorDetailView: View {
                     // Location
                     NavigationLink {
                         MapDetailView(
-                            predator: predator,
                             mapCameraPosition: $mapCameraPosition
                         )
                     } label: {
@@ -59,21 +58,25 @@ struct PredatorDetailView: View {
                                     .symbolEffect(.pulse)
                                 
                             }.annotationTitles(.hidden)
-                        }.frame(height: 150)
-                            .clipShape(.rect(cornerRadius: 15))
-                            .overlay(alignment: .trailing) {
-                                Image(systemName: "chevron.right")
-                                    .resizable()
-                                    .frame(width: 30, height: 50)
-                                    .foregroundStyle(Color(.label))
-                                    .padding(10)
-                            }
-                            .overlay(alignment: .topLeading) {
-                                Text("Current Location")
-                                    .foregroundStyle(Color(.label))
-                                    .font(.title3)
-                                    .padding(5)
-                            }
+                        }
+                        .allowsHitTesting(false)
+                        .frame(height: 150)
+                        .clipShape(.rect(cornerRadius: 15))
+                        .overlay(alignment: .trailing) {
+                            Image(systemName: "chevron.right")
+                                .resizable()
+                                .frame(width: 15, height: 30)
+                                .foregroundStyle(Color(.label))
+                                .padding(10)
+                                
+                        }
+                        .overlay(alignment: .topLeading) {
+                            Text("Current Location")
+                                .foregroundStyle(Color(.label))
+                                .font(.title3)
+                                .padding(5)
+                            
+                        }
                     }
                         
                     // Appears in movies
@@ -114,9 +117,16 @@ struct PredatorDetailView: View {
     let predatorFactory = PredatorFactory().allapexPredators[1]
     let position = PredatorFactory().allapexPredators[1].location
     
-    PredatorDetailView(
-        predator: predatorFactory,
-        mapCameraPosition: 
-                .camera(MapCamera(centerCoordinate: position, distance: 3000))
-    )
+    NavigationStack {
+        PredatorDetailView(
+            predator: predatorFactory,
+            mapCameraPosition:
+                    .camera(
+                        MapCamera(
+                            centerCoordinate: position,
+                            distance: 3000
+                        )
+                    )
+        )
+    }
 }
