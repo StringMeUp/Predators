@@ -42,28 +42,40 @@ struct PredatorDetailView: View {
                         .font(.largeTitle)
                     
                     // Location
-                    ZStack(alignment: .trailing){
+                    NavigationLink {
+                        MapDetailView(
+                            predator: predator,
+                            mapCameraPosition: $mapCameraPosition
+                        )
+                    } label: {
                         Map(position: $mapCameraPosition){
-                            Annotation(predator.name, coordinate: predator.location){
+                            Annotation(
+                                predator.name,
+                                coordinate: predator.location
+                            ){
                                 Image(systemName: "mappin.and.ellipse")
                                     .font(.largeTitle)
                                     .imageScale(.large)
                                     .symbolEffect(.pulse)
+                                
                             }.annotationTitles(.hidden)
-                        }
-                        NavigationLink{
-                            MapDetailView(predator: predator, mapCameraPosition: $mapCameraPosition)
-                        } label: {
-                            Image(systemName: "chevron.right")
-                                .resizable()
-                                .scaledToFill()
-                                .frame(width: 20, height: 20)
-                                .foregroundColor(Color.white)
-                                .padding()
-                        }
+                        }.frame(height: 150)
+                            .clipShape(.rect(cornerRadius: 15))
+                            .overlay(alignment: .trailing) {
+                                Image(systemName: "chevron.right")
+                                    .resizable()
+                                    .frame(width: 30, height: 50)
+                                    .foregroundStyle(Color(.label))
+                                    .padding(10)
+                            }
+                            .overlay(alignment: .topLeading) {
+                                Text("Current Location")
+                                    .foregroundStyle(Color(.label))
+                                    .font(.title3)
+                                    .padding(5)
+                            }
+                    }
                         
-                    }.frame(width: .none, height: 150).cornerRadius(20)
-                   
                     // Appears in movies
                     VStack(alignment: .leading){
                         Text("Appears in:").font(.title2)
@@ -102,5 +114,9 @@ struct PredatorDetailView: View {
     let predatorFactory = PredatorFactory().allapexPredators[1]
     let position = PredatorFactory().allapexPredators[1].location
     
-    PredatorDetailView(predator: predatorFactory, mapCameraPosition: .camera(MapCamera(centerCoordinate: position, distance: 3000)))
+    PredatorDetailView(
+        predator: predatorFactory,
+        mapCameraPosition: 
+                .camera(MapCamera(centerCoordinate: position, distance: 3000))
+    )
 }
