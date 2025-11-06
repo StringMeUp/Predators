@@ -10,7 +10,7 @@ import MapKit
 struct MapDetailView: View {
   
     let predators: [ApexPredator] = PredatorFactory().allapexPredators
-    @Binding var mapCameraPosition: MapCameraPosition
+    @State var mapCameraPosition: MapCameraPosition
     
     var body: some View {
         Map(position: $mapCameraPosition){
@@ -30,5 +30,5 @@ struct MapDetailView: View {
     let predator = PredatorFactory().allapexPredators[1]
     let position = predator.location
     
-    MapDetailView(mapCameraPosition: $mapCameraPosition)
+    MapDetailView(mapCameraPosition: mapCameraPosition)
 }

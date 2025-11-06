@@ -44,7 +44,7 @@ struct PredatorDetailView: View {
                     // Location
                     NavigationLink {
                         MapDetailView(
-                            mapCameraPosition: $mapCameraPosition
+                            mapCameraPosition: .camera(MapCamera(centerCoordinate: predator.location, distance: 1000, heading: 250, pitch: 80))
                         )
                     } label: {
                         Map(position: $mapCameraPosition){
