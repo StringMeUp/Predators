@@ -44,7 +44,15 @@ struct PredatorDetailView: View {
                     // Location
                     NavigationLink {
                         MapDetailView(
-                            mapCameraPosition: .camera(MapCamera(centerCoordinate: predator.location, distance: 1000, heading: 250, pitch: 80))
+                            mapCameraPosition: 
+                                    .camera(
+                                        MapCamera(
+                                            centerCoordinate: predator.location,
+                                            distance: 1000,
+                                            heading: 250,
+                                            pitch: 80
+                                        )
+                                    )
                         )
                     } label: {
                         Map(position: $mapCameraPosition){
@@ -84,7 +92,7 @@ struct PredatorDetailView: View {
                         Text("Appears in:").font(.title2)
                         Spacer()
                         ForEach(predator.movies, id: \.self){ movie in
-                            Text("\u{2022} \(movie)")
+                            Text("• \(movie)")
                         }
                     }
                   
@@ -94,7 +102,8 @@ struct PredatorDetailView: View {
                   
                         ForEach(predator.movieScenes){ movieScene in
                             Spacer()
-                            Text(movieScene.movie)       .font(.title3)
+                            Text(movieScene.movie)
+                                .font(.title3)
                                 .fontWeight(.semibold)
                     
                             Text(movieScene.sceneDescription)
