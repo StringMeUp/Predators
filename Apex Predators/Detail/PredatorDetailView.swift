@@ -20,7 +20,12 @@ struct PredatorDetailView: View {
                     // Background Image
                     Image(predator.type.rawValue)
                         .resizable()
-                        .scaledToFit()
+                        .scaledToFit().overlay {
+                            LinearGradient(stops: [
+                                Gradient.Stop(color: .clear, location: 0.8),
+                                Gradient.Stop(color: .black, location: 1.0),
+                            ], startPoint: .top, endPoint: .bottom)
+                        }
                 
                     // Dino Image
                     Image(predator.imageUrl)
@@ -123,8 +128,8 @@ struct PredatorDetailView: View {
 }
 
 #Preview {
-    let predatorFactory = PredatorFactory().allapexPredators[1]
-    let position = PredatorFactory().allapexPredators[1].location
+    let predatorFactory = PredatorFactory().allapexPredators[10]
+    let position = PredatorFactory().allapexPredators[10].location
     
     NavigationStack {
         PredatorDetailView(
