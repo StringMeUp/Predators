@@ -39,7 +39,7 @@ struct MapDetailView: View {
                     .font(.largeTitle)
                     .imageScale(.large)
                     .padding(.trailing, 25)
-                    .background(.ultraThinMaterial)
+                    .background(.clear)
             }
         }
     }
