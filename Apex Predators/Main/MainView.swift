@@ -13,6 +13,8 @@ struct MainView: View {
     @State var searchText: String = ""
     @State var alphabeticalOrder: Bool = false
     @State var currentSelection: PredatorType = .all
+    @State var selectedPredator: ApexPredator? = nil
+    @State var predators: [ApexPredator] = []
     
     //Computed property
     var filteredPredators: [ApexPredator] {
@@ -23,14 +25,16 @@ struct MainView: View {
     
     var body: some View {
         NavigationStack {
-            List(filteredPredators) { predator in
+            List(predators) { predator in
                 NavigationLink {
                     // detail info
                     PredatorDetailView(
                         predator: predator,
                         mapCameraPosition: .camera(MapCamera(centerCoordinate: predator.location, distance: 30000)))
                 } label: {
-                    PredatorInfoView(predator: predator)
+                    PredatorInfoView(predator: predator){
+                        selectedPredator = predator
+                    }
                 }
             }
             .navigationTitle("Apex Predators")
@@ -75,6 +79,16 @@ struct MainView: View {
                 }
             }
             .preferredColorScheme(.dark)
+        }
+        .onChange(of: selectedPredator) { oldValue, newValue in
+            guard let predator = newValue else { return }
+            predators = predatorFactory.remove(predator: predator)
+        }
+        .onChange(of: filteredPredators) { _, _ in
+           predators = filteredPredators
+        }
+        .onAppear {
+            predators = filteredPredators
         }
     }
 }

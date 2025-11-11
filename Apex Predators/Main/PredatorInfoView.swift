@@ -10,6 +10,7 @@ import SwiftUI
 struct PredatorInfoView: View {
    
     var predator: ApexPredator
+    var onRemoveTap: () -> Void
     
     var body: some View {
         // predator item
@@ -27,15 +28,28 @@ struct PredatorInfoView: View {
                 Text(predator.name)
                     .fontWeight(.bold)
                 // type
-                Text(predator.type.rawValue)
-                    .font(.subheadline)
-                    .padding(.horizontal, 13)
-                    .padding(.vertical, 5)
-                    .background(predator.backgroundColor)
-                    .clipShape(.capsule)
-                    .padding(.vertical, 4)
-                
+                HStack {
+                    Text(predator.type.rawValue)
+                        .font(.subheadline)
+                        .padding(.horizontal, 13)
+                        .padding(.vertical, 5)
+                        .background(predator.backgroundColor)
+                        .clipShape(.capsule)
+                        .padding(.vertical, 4)
+                    
+                    Image(systemName: "trash.circle")
+                        .resizable()
+                        .frame(width: 34, height: 34)
+                        .onTapGesture {
+                           onRemoveTap()
+                        }
+                }
             }
         }
     }
+}
+
+
+#Preview {
+    PredatorInfoView(predator: PredatorFactory().allapexPredators[1], onRemoveTap: {})
 }

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import MapKit
 
-struct ApexPredator: Decodable, Identifiable {
+struct ApexPredator: Decodable, Identifiable, Equatable {
     let id: Int
     let name: String
     let type: PredatorType

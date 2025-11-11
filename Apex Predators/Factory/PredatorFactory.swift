@@ -61,4 +61,11 @@ class PredatorFactory {
             apexPredators = allapexPredators.filter { $0.type == type }
         }
     }
+    
+    func remove(predator: ApexPredator?)  -> [ApexPredator] {
+        guard let predator else { return apexPredators }
+        apexPredators = apexPredators.filter { $0.id != predator.id }
+        allapexPredators = allapexPredators.filter { $0.id != predator.id }
+        return apexPredators
+    }
 }
