@@ -12,6 +12,7 @@ struct MapDetailView: View {
     let predators: [ApexPredator] = PredatorFactory().allapexPredators
     @State var mapCameraPosition: MapCameraPosition
     @State var satelite: Bool = false
+    @State var isPopoverPresented: Bool = false
     
     var body: some View {
         Map(position: $mapCameraPosition){
@@ -23,7 +24,35 @@ struct MapDetailView: View {
                         .frame(height: 100)
                         .shadow(color: .white, radius: 10)
                         .scaleEffect(x: -1)
-                }.annotationTitles(.hidden)
+                        .onTapGesture {
+                            isPopoverPresented.toggle()
+                        }
+                        .popover(isPresented: $isPopoverPresented) {
+                            VStack(alignment: .center){
+                                VStack {
+                                    Text(predator.name)
+                                        .font(.title3)
+                                        .fontWeight(.bold)
+                                    Label(
+                                        "Type: \(predator.type.rawValue.capitalized)",
+                                        systemImage: predator.type.icon
+                                    )
+                                }.padding(.top)
+                                // Appears in movies
+                                VStack(alignment: .leading){
+                                    Text("Appears in:").font(.title2)
+                                    Spacer()
+                                    ForEach(predator.movies, id: \.self){ movie in
+                                        Text("• \(movie)")
+                                    }
+                                }.padding()
+                            }
+                            .presentationCompactAdaptation(.popover)
+                            .padding(12)
+                        }
+                      
+                }
+                .annotationTitles(.hidden)
             }
         }
         .mapStyle(
@@ -35,11 +64,13 @@ struct MapDetailView: View {
             Button{
                 satelite.toggle()
             } label: {
-                Image(systemName: satelite ? "globe.americas.fill" : "globe.americas")
-                    .font(.largeTitle)
-                    .imageScale(.large)
-                    .padding(.trailing, 25)
-                    .background(.clear)
+                Image(
+                    systemName: satelite ? "globe.americas.fill" : "globe.americas"
+                )
+                .font(.largeTitle)
+                .imageScale(.large)
+                .padding(.trailing, 25)
+                .background(.clear)
             }
         }
     }
