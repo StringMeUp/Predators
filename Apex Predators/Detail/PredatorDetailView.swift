@@ -29,15 +29,22 @@ struct PredatorDetailView: View {
                         }
                 
                     // Dino Image
-                    Image(predator.imageUrl)
-                        .resizable()
-                        .frame(
-                            width: geo.size.width/1.5,
-                            height: geo.size.height/3.8
-                        )
-                        .scaleEffect(x: -1)
-                        .shadow(color: .black, radius: 7)
-                        .offset(y: 20)
+                    NavigationLink{
+                        Image(predator.imageUrl)
+                            .resizable()
+                            .scaledToFit()
+                
+                    } label: {
+                        Image(predator.imageUrl)
+                            .resizable()
+                            .frame(
+                                width: geo.size.width/1.5,
+                                height: geo.size.height/3.8
+                            )
+                            .scaleEffect(x: -1)
+                            .shadow(color: .black, radius: 7)
+                            .offset(y: 20)
+                    }
                 }
                 
                 Spacer().frame(height: 50)
