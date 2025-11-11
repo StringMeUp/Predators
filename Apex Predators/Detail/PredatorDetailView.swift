@@ -12,6 +12,7 @@ struct PredatorDetailView: View {
     
     var predator: ApexPredator
     @State var mapCameraPosition: MapCameraPosition
+    @Namespace var namespace
 
     var body: some View {
         GeometryReader{ geo in
@@ -58,7 +59,7 @@ struct PredatorDetailView: View {
                                             pitch: 80
                                         )
                                     )
-                        )
+                        ).navigationTransition(.zoom(sourceID: 1, in: namespace))
                     } label: {
                         Map(position: $mapCameraPosition){
                             Annotation(
@@ -89,7 +90,7 @@ struct PredatorDetailView: View {
                                 .font(.title3)
                                 .padding(5)
                             
-                        }
+                        }.matchedTransitionSource(id: 1, in: namespace)
                     }
                         
                     // Appears in movies
