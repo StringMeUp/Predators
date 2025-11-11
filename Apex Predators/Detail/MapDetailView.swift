@@ -43,7 +43,7 @@ struct MapDetailView: View {
                                     Text("Appears in:").font(.title2)
                                     Spacer()
                                     ForEach(predator.movies, id: \.self){ movie in
-                                        Text("• \(movie)")
+                                        Text("• \(movie.rawValue)")
                                     }
                                 }.padding()
                             }

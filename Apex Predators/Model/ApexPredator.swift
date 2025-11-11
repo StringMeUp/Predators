@@ -15,7 +15,7 @@ struct ApexPredator: Decodable, Identifiable, Equatable {
     let type: PredatorType
     let latitude: Double
     let longitude: Double
-    let movies: [String]
+    let movies: [Movie]
     let movieScenes: [MovieScene]
     let link: String
     

@@ -13,12 +13,13 @@ struct MainView: View {
     @State var searchText: String = ""
     @State var alphabeticalOrder: Bool = false
     @State var currentSelection: PredatorType = .all
+    @State var currentMovieSelection: Movie = .all
     @State var selectedPredator: ApexPredator? = nil
     @State var predators: [ApexPredator] = []
     
     //Computed property
     var filteredPredators: [ApexPredator] {
-        predatorFactory.filter(by: currentSelection)
+        predatorFactory.filter(by: currentSelection, by: currentMovieSelection)
         predatorFactory.sort(by: alphabeticalOrder)
         return predatorFactory.search(for: searchText)
     }
@@ -72,10 +73,32 @@ struct MainView: View {
                                     systemImage: type.icon
                                 )
                             }
+                    
                         }
                     } label: {
                         Image(systemName: "slider.horizontal.3")
                     }
+                    
+                }
+                
+                ToolbarItem(placement: .topBarTrailing){
+                    Menu {
+                        Picker(
+                            "Sort by movie",
+                            selection: $currentMovieSelection.animation()
+                        ) {
+                        
+                            ForEach(Movie.allCases){ movie in
+                                Label(
+                                    movie.rawValue.capitalized,
+                                    systemImage: movie.icon
+                                )
+                            }
+                        }
+                    } label: {
+                        Image(systemName: "film")
+                    }
+                    
                 }
             }
             .preferredColorScheme(.dark)

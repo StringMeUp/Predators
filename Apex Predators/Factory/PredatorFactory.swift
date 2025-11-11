@@ -54,13 +54,14 @@ class PredatorFactory {
         }
     }
     
-    func filter(by type: PredatorType) {
-        if type == .all {
+    func filter(by type: PredatorType, by movie: Movie) {
+        if type == .all && movie == .all {
             apexPredators = allapexPredators
         } else {
-            apexPredators = allapexPredators.filter { $0.type == type }
+            apexPredators = allapexPredators.filter { $0.type == type || $0.movies.contains(movie) }
         }
     }
+
     
     func remove(predator: ApexPredator?)  -> [ApexPredator] {
         guard let predator else { return apexPredators }
