@@ -9,10 +9,10 @@ import Foundation
 import SwiftUI
 internal import Combine
 
-class PredatorFactory {
+class PredatorFactory: ObservableObject {
     
     var allapexPredators: [ApexPredator] = []
-    var apexPredators: [ApexPredator] = []
+    @Published var apexPredators: [ApexPredator] = []
     
     init() {
         decodePredatorsFromFile()
@@ -27,7 +27,8 @@ class PredatorFactory {
                 let data = try Data(contentsOf: url)
                 let decoder = JSONDecoder()
                 decoder.keyDecodingStrategy = .convertFromSnakeCase
-                allapexPredators = try decoder.decode([ApexPredator].self, from: data)
+                allapexPredators = try decoder
+                    .decode([ApexPredator].self, from: data)
                 apexPredators = allapexPredators
                 print("Successfully parsed JSON data.\(apexPredators)")
             } catch {
@@ -36,12 +37,12 @@ class PredatorFactory {
         }
     }
     
-    func search(for seachText: String) -> [ApexPredator] {
-        if seachText.isEmpty {
-            return apexPredators
+    func search(for searchText: String) {
+        if searchText.isEmpty {
+            apexPredators = allapexPredators
         } else {
-            return apexPredators.filter { predator in
-                predator.name.localizedCaseInsensitiveContains(seachText)
+            apexPredators = allapexPredators.filter { predator in
+                predator.name.localizedCaseInsensitiveContains(searchText)
             }
         }
     }
@@ -63,10 +64,26 @@ class PredatorFactory {
     }
 
     
-    func remove(predator: ApexPredator?)  -> [ApexPredator] {
-        guard let predator else { return apexPredators }
+    func remove(predator: ApexPredator?) {
+        guard let predator else { return }
         apexPredators = apexPredators.filter { $0.id != predator.id }
         allapexPredators = allapexPredators.filter { $0.id != predator.id }
-        return apexPredators
+    }
+    
+    func searchAndFilterPredators(
+        with searchText: String,
+        by type: PredatorType,
+        by movie: Movie
+    ) {
+        apexPredators = allapexPredators.filter { predator in
+            // if empty -> all else search
+            let matchesSearch = searchText.isEmpty || predator.name.localizedCaseInsensitiveContains(searchText)
+            // if type all -> full list else only with type
+            let matchesType = type == .all || predator.type == type
+            // same
+            let matchesMovie = movie == .all || predator.movies.contains(movie)
+            // all together
+            return matchesSearch && matchesType && matchesMovie
+        }
     }
 }

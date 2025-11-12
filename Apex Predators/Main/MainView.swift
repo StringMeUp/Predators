@@ -9,24 +9,16 @@ import SwiftUI
 import MapKit
 
 struct MainView: View {
-    var predatorFactory = PredatorFactory()
+    @StateObject private var factory = PredatorFactory()
     @State var searchText: String = ""
     @State var alphabeticalOrder: Bool = false
-    @State var currentSelection: PredatorType = .all
+    @State var currentTypeSelection: PredatorType = .all
     @State var currentMovieSelection: Movie = .all
     @State var selectedPredator: ApexPredator? = nil
-    @State var predators: [ApexPredator] = []
-    
-    //Computed property
-    var filteredPredators: [ApexPredator] {
-        predatorFactory.filter(by: currentSelection, by: currentMovieSelection)
-        predatorFactory.sort(by: alphabeticalOrder)
-        return predatorFactory.search(for: searchText)
-    }
     
     var body: some View {
         NavigationStack {
-            List(predators) { predator in
+            List(factory.apexPredators) { predator in
                 NavigationLink {
                     // detail info
                     PredatorDetailView(
@@ -65,7 +57,7 @@ struct MainView: View {
                     Menu {
                         Picker(
                             "Sort by",
-                            selection: $currentSelection.animation()
+                            selection: $currentTypeSelection.animation()
                         ) {
                             ForEach(PredatorType.allCases){ type in
                                 Label(
@@ -102,16 +94,22 @@ struct MainView: View {
                 }
             }
             .preferredColorScheme(.dark)
-        }
-        .onChange(of: selectedPredator) { oldValue, newValue in
-            guard let predator = newValue else { return }
-            predators = predatorFactory.remove(predator: predator)
-        }
-        .onChange(of: filteredPredators) { _, _ in
-           predators = filteredPredators
-        }
-        .onAppear {
-            predators = filteredPredators
+            .onChange(of: selectedPredator) { oldValue, newValue in
+                guard let predator = newValue else { return }
+                factory.remove(predator: predator)
+            }
+            .onChange(of: searchText) { oldQuery, newQuery in
+                factory.searchAndFilterPredators(with: newQuery, by: currentTypeSelection, by: currentMovieSelection)
+            }
+            .onChange(of: currentTypeSelection) { oldType, newType in
+                factory.searchAndFilterPredators(with: searchText, by: newType, by: currentMovieSelection)
+            }
+            .onChange(of: currentMovieSelection) { oldMovie, newMovie in
+                factory.searchAndFilterPredators(with: searchText, by: currentTypeSelection, by: newMovie)
+            }
+            .onChange(of: alphabeticalOrder) { oldOrder, newOrder in
+                factory.sort(by: newOrder)
+            }
         }
     }
 }
