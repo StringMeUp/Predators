@@ -96,7 +96,9 @@ struct MainView: View {
             .preferredColorScheme(.dark)
             .onChange(of: selectedPredator) { oldValue, newValue in
                 guard let predator = newValue else { return }
-                factory.remove(predator: predator)
+                withAnimation {
+                    factory.remove(predator: predator)
+                }
             }
             .onChange(of: searchText) { oldQuery, newQuery in
                 factory.searchAndFilterPredators(with: newQuery, by: currentTypeSelection, by: currentMovieSelection)

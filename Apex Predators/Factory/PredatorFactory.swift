@@ -64,8 +64,7 @@ class PredatorFactory: ObservableObject {
     }
 
     
-    func remove(predator: ApexPredator?) {
-        guard let predator else { return }
+    func remove(predator: ApexPredator) {
         apexPredators = apexPredators.filter { $0.id != predator.id }
         allapexPredators = allapexPredators.filter { $0.id != predator.id }
     }
