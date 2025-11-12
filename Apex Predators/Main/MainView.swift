@@ -110,7 +110,9 @@ struct MainView: View {
                 factory.searchAndFilterPredators(with: searchText, by: currentTypeSelection, by: newMovie)
             }
             .onChange(of: alphabeticalOrder) { oldOrder, newOrder in
-                factory.sort(by: newOrder)
+                withAnimation {
+                    factory.sort(by: newOrder)
+                }
             }
         }
     }
